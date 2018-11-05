@@ -14,7 +14,8 @@ module.exports = function(app, db) {
 			description: 'Demonstrating how to describe a RESTful API with Swagger',
         },
 //        host: 'notabledemo.azurewebsites.net',
-		host: 'localhost:8080',
+//		host: 'localhost:8080',
+	   host: 'openbankingapi-anz2.azurewebsites.net',  
         basePath: '/',
   };
   
