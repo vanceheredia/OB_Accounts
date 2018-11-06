@@ -15,7 +15,8 @@ module.exports = function(app, db) {
         },
 //        host: 'notabledemo.azurewebsites.net',
 //		host: 'localhost:8080',
-	   host: 'openbankingapi-anz2.azurewebsites.net',  
+//	   host: 'openbankingapi-anz2.azurewebsites.net',  
+	   host: 'api-cicd-anz-demo.azurewebsites.net', 
         basePath: '/',
   };
   
@@ -128,7 +129,7 @@ module.exports = function(app, db) {
      *       200:
      *         description: A single account object
      *         schema:
-     *           $ref: '#/definitions/account'
+     *           $ref: '#/definitions/accounts'
      */
     app.get('/accounts/:id', (req, res) => {
         const id = req.params.id;
@@ -160,7 +161,7 @@ module.exports = function(app, db) {
      *       200:
      *         description: All account objects
      *         schema:
-     *           $ref: '#/definitions/account'
+     *           $ref: '#/definitions/accounts'
      */
     app.get('/accounts', (req, res) => {
     	//calls the DB 'notes', gets a list of all the items, returns it to an array ant then stores it into docs as a JSON object
@@ -207,7 +208,7 @@ module.exports = function(app, db) {
      *       200:
      *         description: Newly created account object
      *         schema:
-     *           $ref: '#/definitions/account'
+     *           $ref: '#/definitions/accounts'
      */
     app.post('/accounts', (req, res) => {
     	let output = "";
@@ -243,15 +244,15 @@ module.exports = function(app, db) {
      *       200:
      *         description: String response indicating deletion success
      *         schema:
-     *           $ref: '#/definitions/account'
+     *           $ref: '#/definitions/accounts'
      *       404:
      *         description: String response indicating user not found
      *         schema:
-     *           $ref: '#/definitions/account'       
+     *           $ref: '#/definitions/accounts'       
      *       500:
      *         description: String response indicating Internal Server Error
      *         schema:
-     *           $ref: '#/definitions/account'       
+     *           $ref: '#/definitions/accounts'       
      */
     app.delete('/accounts/:id', (req, res) => {
         const id = req.params.id;
@@ -285,7 +286,7 @@ module.exports = function(app, db) {
      *       200:
      *         description: A single account object
      *         schema:
-     *           $ref: '#/definitions/account'
+     *           $ref: '#/definitions/accounts'
      */
     app.put('/accounts/:id', (req, res) => {
         const id = req.params.id;
