@@ -1,24 +1,21 @@
 /* jshint esversion: 6, asi:true */
 
-let ObjectID = require('mongodb').ObjectID;
+var ObjectID = require('mongodb').ObjectID;
 var swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-
-//test an uopdate
 
 module.exports = function(app, db) {
 
     // swagger definition
     var swaggerDefinition = {
         info: {
-			title: 'Node Swagger API',
-			version: '1.0.0',
-			description: 'Demonstrating how to describe a RESTful API with Swagger',
+            title: 'ANZ DEMO - API Developer ',
+            version: '1.0.0',
+            description: 'ANZ DEMO - Auto generated Swagger documentation for the Account Management API.  This is part of an E2E API DevOps Toolset demo',
         },
 //        host: 'notabledemo.azurewebsites.net',
-//		host: 'localhost:8080',
-//	   host: 'openbankingapi-anz2.azurewebsites.net',  
-	   host: 'api-cicd-anz-demo.azurewebsites.net', 
+//      host: 'localhost:8080',
+        host: 'api-cicd-anz-demo.azurewebsites.net',
         basePath: '/',
   };
   
@@ -104,11 +101,11 @@ module.exports = function(app, db) {
  * definition:
  *   accounts:
  *     properties:
- *       name:
+ *       title <Account Name>:
  *         type: string
- *       text:
+ *       body <Account Number>:
  *         type: string
- *       funds:
+ *       funds <Account Funds>:
  *         type: integer
  */
 
@@ -122,11 +119,11 @@ module.exports = function(app, db) {
      *     produces:
      *       - application/json
      *     parameters:
- 	 *       - name: id
- 	 *         description: Username to use for login.
- 	 *         in: path
- 	 *         required: true
-	 *         type: string
+     *       - name: id
+     *         description: Username to use for login.
+     *         in: path
+     *         required: true
+     *         type: string
      *     responses:
      *       200:
      *         description: A single account object
@@ -137,15 +134,15 @@ module.exports = function(app, db) {
         const id = req.params.id;
         const details = {'_id': new ObjectID(id)};
 
-        let output =  db.collection('notes').findOne(details, (err, item) => {
+        var output =  db.collection('notes').findOne(details, (err, item) => {
             if(err) {
                 res.send({'error': 'An error has occurred'});
             } else {
-				
-				if (item == null || item == 'undefined') {
-   					res.status(404);
-  				}
-				res.json(item);
+                
+                if (item == null || item == 'undefined') {
+                    res.status(404);
+                }
+                res.json(item);
             }
         });
     });
@@ -166,18 +163,18 @@ module.exports = function(app, db) {
      *           $ref: '#/definitions/accounts'
      */
     app.get('/accounts', (req, res) => {
-    	//calls the DB 'notes', gets a list of all the items, returns it to an array ant then stores it into docs as a JSON object
-		let output = db.collection('notes').find().toArray(function(err, docs){
-			if (err) {
-					console.log("In ERROR SECTION");
-					res.send(err);
-				} else {
-					//db.close(); // this line cause the DB to have problems as we dont re-initiate the connection
-					console.log("going to return stuff");
-					res.json(docs);
-				}
-		});
-	});
+        //calls the DB 'notes', gets a list of all the items, returns it to an array ant then stores it into docs as a JSON object
+        var output = db.collection('notes').find().toArray(function(err, docs){
+            if (err) {
+                    console.log("In ERROR SECTION");
+                    res.send(err);
+                } else {
+                    //db.close(); // this line cause the DB to have problems as we dont re-initiate the connection
+                    console.log("going to return stuff");
+                    res.json(docs);
+                }
+        });
+    });
 
     /**
      * @swagger
@@ -188,24 +185,24 @@ module.exports = function(app, db) {
      *     description: Creates a new account
      *     produces:
      *       - application/json
-	 *     consumes:
-	 *       - application/x-www-form-urlencoded 
-	 *     parameters:    
- 	 *       - name: title
- 	 *         in: formData
-	 *         description: Account_Name
-	 *         required: true
-	 *         type: string
- 	 *       - name: body
- 	 *         in: formData
-	 *         description: Account_Number
-	 *         required: true
-	 *         type: string
- 	 *       - name: funds
- 	 *         in: formData
-	 *         description: Account_Funds
-	 *         required: true
-	 *         type: string
+     *     consumes:
+     *       - application/x-www-form-urlencoded 
+     *     parameters:    
+     *       - name: title
+     *         in: formData
+     *         description: Account_Name
+     *         required: true
+     *         type: string
+     *       - name: body
+     *         in: formData
+     *         description: Account_Number
+     *         required: true
+     *         type: string
+     *       - name: funds
+     *         in: formData
+     *         description: Account_Funds
+     *         required: true
+     *         type: string
      *     responses:
      *       200:
      *         description: Newly created account object
@@ -213,15 +210,22 @@ module.exports = function(app, db) {
      *           $ref: '#/definitions/accounts'
      */
     app.post('/accounts', (req, res) => {
-    	let output = "";
-    	const note = {text: req.body.body, title: req.body.title, funds: req.body.funds};
-        db.collection('notes').insert(note, (err, result) => {
+        var output = "";
+        const note = {text: req.body.body, title: req.body.title, funds: parseFloat(req.body.funds)};
+
+//        console.log(req);
+        output = db.collection('notes').insert(note, (err, result) => {
+//            console.log("OUput of Post");
+//            console.log(result);
             if(err) {
                 res.status(500);
                 res.send({'error': 'An error has occurred'});
             } else {
-				res.status(200);
-				res.send({'SUCCESS':'Account successfully created'});
+                res.status(200);
+//                console.log(result.ops);
+//                console.log(result.ops[0]._id);
+//                console.log(result.insertedIds[0]);
+                res.send({'ACCOUNT ID CREATED': result.insertedIds[0]});
             }
         });
     });
@@ -229,13 +233,86 @@ module.exports = function(app, db) {
 
     /**
      * @swagger
-     * /accounts/id:
+     * /accounts/{id}:
+     *   delete:
+     *     tags:
+     *       - account
+     *     description: Deletes an account
+     *     produces:
+     *       - application/json
+     *     consumes:
+     *       - application/x-www-form-urlencoded 
+     *     parameters:
+     *       - name: id
+     *         description: Username to use for login.
+     *         in: path
+     *         required: true
+     *         type: string
+     *     responses:
+     *       200:
+     *         description: String response indicating deletion success
+     *         schema:
+     *           $ref: '#/definitions/accounts'
+     *       404:
+     *         description: String response indicating user not found
+     *         schema:
+     *           $ref: '#/definitions/accounts'       
+     *       500:
+     *         description: String response indicating Internal Server Error
+     *         schema:
+     *           $ref: '#/definitions/accounts'       
+     */
+    app.delete('/accounts/:id', (req, res) => {
+        const id = req.params.id;
+        const details = {'_id': new ObjectID(id)};
+        let outcome = db.collection('notes').deleteOne(details, (err, item) => {
+            if(err) {
+                res.status(500);
+                res.send({'ERROR': 'An error has occurred'});
+            } else {
+                if(item.deletedCount == 1){
+                    res.status(200);
+                    res.send({'ID ': 'has been deleted'});
+                }else{
+                    res.status(404);
+                    res.send({'ERROR': 'Record not found'});
+                }
+            }
+        });
+    });
+
+    /**
+     * @swagger
+     * /accounts/{id}:
      *   put:
      *     tags:
      *       - account
      *     description: Updates an exisiting account
      *     produces:
      *       - application/json
+     *     consumes:
+     *       - application/x-www-form-urlencoded 
+     *     parameters:
+     *       - name: id
+     *         description: Username to use for login.
+     *         in: path
+     *         required: true
+     *         type: string
+     *       - name: title
+     *         in: formData
+     *         description: Account_Name
+     *         required: true
+     *         type: string
+     *       - name: body
+     *         in: formData
+     *         description: Account_Number
+     *         required: true
+     *         type: string
+     *       - name: funds
+     *         in: formData
+     *         description: Account_Funds
+     *         required: true
+     *         type: string
      *     responses:
      *       200:
      *         description: A single account object
@@ -245,7 +322,9 @@ module.exports = function(app, db) {
     app.put('/accounts/:id', (req, res) => {
         const id = req.params.id;
         const details = {'_id': new ObjectID(id)};
-        const note = {text: req.body.body, title: req.body.title};
+//        const note = {text: req.body.body, title: req.body.title};
+        const note = {text: req.body.body, title: req.body.title, funds: parseFloat(req.body.funds)};
+
         db.collection('notes').update(details, note, (err, result) => {
             if(err) {
                 res.send({'error': 'An error has occurred'});
