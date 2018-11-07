@@ -1,3 +1,5 @@
+/* jshint esversion: 6, asi:true */
+
 let ObjectID = require('mongodb').ObjectID;
 var swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
