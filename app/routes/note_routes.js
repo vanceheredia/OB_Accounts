@@ -234,56 +234,6 @@ module.exports = function(app, db) {
     /**
      * @swagger
      * /accounts/{id}:
-     *   delete:
-     *     tags:
-     *       - account
-     *     description: Deletes an account
-     *     produces:
-     *       - application/json
-     *     consumes:
-     *       - application/x-www-form-urlencoded 
-     *     parameters:
-     *       - name: id
-     *         description: Username to use for login.
-     *         in: path
-     *         required: true
-     *         type: string
-     *     responses:
-     *       200:
-     *         description: String response indicating deletion success
-     *         schema:
-     *           $ref: '#/definitions/accounts'
-     *       404:
-     *         description: String response indicating user not found
-     *         schema:
-     *           $ref: '#/definitions/accounts'       
-     *       500:
-     *         description: String response indicating Internal Server Error
-     *         schema:
-     *           $ref: '#/definitions/accounts'       
-     */
-    app.delete('/accounts/:id', (req, res) => {
-        const id = req.params.id;
-        const details = {'_id': new ObjectID(id)};
-        let outcome = db.collection('notes').deleteOne(details, (err, item) => {
-            if(err) {
-                res.status(500);
-                res.send({'ERROR': 'An error has occurred'});
-            } else {
-                if(item.deletedCount == 1){
-                    res.status(200);
-                    res.send({'ID ': 'has been deleted'});
-                }else{
-                    res.status(404);
-                    res.send({'ERROR': 'Record not found'});
-                }
-            }
-        });
-    });
-
-    /**
-     * @swagger
-     * /accounts/{id}:
      *   put:
      *     tags:
      *       - account
